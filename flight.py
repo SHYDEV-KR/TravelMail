@@ -18,7 +18,7 @@ def arrangeFlightData(dataList: list):
   df_html = df_html.replace('<table border="1" class="dataframe">', '<table border="0" class="dataframe" bgcolor=black cellpadding=1 cellspacing=1><tr><td><table border="0" class="dataframe" bgcolor=black>')
   df_html = df_html.replace('</table>', '</table> </td></tr></table>')
   df_html = df_html.replace('<td>','<td bgcolor=white>')
-  df_html = df_html.replace('<th>','<th bgcolor=#e5e5e5>')
+  df_html = df_html.replace('<th>','<th bgcolor=#B1B2FF>')
   return df_html
 
 

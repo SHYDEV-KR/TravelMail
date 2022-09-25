@@ -5,6 +5,8 @@ from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
 import datetime as dt
 import private
+import os
+
 privateKeys = private.myKeys()
 
 def formatDateToKorean():
@@ -21,7 +23,7 @@ message['From'] = privateKeys["sender_email"]
 message['To'] = ",".join(recipients)
 
 filename = "price.png"
-fp = open(filename, 'rb')
+fp = open(os.path.dirname(os.path.realpath(__file__)) + "/" + filename, 'rb')
 att = MIMEApplication(fp.read(), _subtype="pdf")
 fp.close()
 att.add_header('Content-Disposition', 'attachment', filename=filename)
