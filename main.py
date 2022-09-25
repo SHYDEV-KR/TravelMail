@@ -7,7 +7,9 @@ import datetime as dt
 import private
 import os
 
+
 privateKeys = private.myKeys()
+flightTable = flight.getFlightData(privateKeys["url"])
 
 def formatDateToKorean():
   today = dt.datetime.now()
@@ -23,13 +25,15 @@ message['From'] = privateKeys["sender_email"]
 message['To'] = ",".join(recipients)
 
 filename = "price.png"
-fp = open(os.path.dirname(os.path.realpath(__file__)) + "/" + filename, 'rb')
-att = MIMEApplication(fp.read(), _subtype="pdf")
-fp.close()
-att.add_header('Content-Disposition', 'attachment', filename=filename)
-message.attach(att)
+try:
+  fp = open(os.path.dirname(os.path.realpath(__file__)) + "/" + filename, 'rb')
+  att = MIMEApplication(fp.read(), _subtype="pdf")
+  fp.close()
+  att.add_header('Content-Disposition', 'attachment', filename=filename)
+  message.attach(att)
+except:
+  print("no image file!")
 
-flightTable = flight.getFlightData(privateKeys["url"])
 buttonStyle = """
   margin: 1rem 0 0 0;
   padding: 0.5rem 1rem;
