@@ -4,6 +4,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import pandas as pd
 import private
+import os
 
 def getCurrencyData(url):
   specific_options = webdriver.ChromeOptions()
@@ -20,7 +21,8 @@ def getCurrencyData(url):
   return [f'{now.year}-{str(now.month).zfill(2)}-{str(now.day).zfill(2)}', f'{str(now.hour).zfill(2)}:{str(now.minute).zfill(2)}:{str(now.second).zfill(2)}', JPY_KRW]
 
 
-df = pd.read_csv("jpy_krw.csv", engine='python')
+df = pd.read_csv(os.path.dirname(os.path.realpath(__file__)) + "/" + "jpy_krw.csv", engine='python')
 length = df.shape[0] + 1
 df.loc[length] = getCurrencyData(private.info["currency_url"])
 df.to_csv("jpy_krw.csv", index=False)
+print("updated latest currency!")
