@@ -6,18 +6,19 @@ from email.mime.application import MIMEApplication
 import datetime as dt
 import private
 import os
-
-
-privateKeys = private.myKeys()
-flightTable = flight.getFlightData(privateKeys["url"])
+import pandas as pd
 
 def formatDateToKorean():
   today = dt.datetime.now()
   return f"{today.month}월 {today.day}일"
 
-recipients = privateKeys["recipients"]
+df = pd.read_csv("jpy_krw.csv", engine='python')
+length = df.shape[0]
 
-title = f"[{formatDateToKorean()}] 후쿠오카 왕복 최저가"
+privateKeys = private.myKeys()
+flightTable = flight.getFlightData(privateKeys["url"])
+recipients = privateKeys["recipients"]
+title = f"[{formatDateToKorean()}] 일본여행 정보"
 
 message = MIMEMultipart()
 message['Subject'] = title
@@ -59,6 +60,7 @@ content = f"""
       <body>
           <h3>{title}</h3>
           <p>마음을 담아 보내드립니다 *^^*</p>
+          <p>{df.iloc[length - 1]['date']} {df.iloc[length - 1]['time']} 기준 엔화 환율: <strong>{df.iloc[length -1]['currency']}</strong></p>
           <p>사진도 참고하세요 ㅎㅎ</p>
           {flightTable}
           <p>위 표는 {dt.datetime.now()} 기준이며 몇 초 정도의 오차는 있을 수 있음</p>
