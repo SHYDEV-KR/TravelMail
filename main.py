@@ -12,7 +12,7 @@ def formatDateToKorean():
   today = dt.datetime.now()
   return f"{today.month}월 {today.day}일"
 
-df = pd.read_csv("jpy_krw.csv", engine='python')
+df = pd.read_csv(os.path.dirname(os.path.realpath(__file__)) + "/" + "jpy_krw.csv", engine='python')
 length = df.shape[0]
 
 privateKeys = private.myKeys()
