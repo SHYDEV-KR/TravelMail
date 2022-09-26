@@ -24,5 +24,5 @@ def getCurrencyData(url):
 df = pd.read_csv(os.path.dirname(os.path.realpath(__file__)) + "/" + "jpy_krw.csv", engine='python')
 length = df.shape[0] + 1
 df.loc[length] = getCurrencyData(private.info["currency_url"])
-df.to_csv("jpy_krw.csv", index=False)
-print("updated latest currency!")
+df.to_csv(os.path.dirname(os.path.realpath(__file__)) + "/" + "jpy_krw.csv", index=False)
+print("✅ updated latest currency!")
