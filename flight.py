@@ -3,6 +3,7 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 
 import pandas as pd
+import os
 
 def arrangeFlightData(dataList: list):
   df = list()
@@ -31,7 +32,7 @@ def getFlightData(url):
   driver.set_window_size(1920, 1080)
   driver.get(url)
   time.sleep(3)
-  driver.save_screenshot('price.png')
+  driver.save_screenshot(os.path.dirname(os.path.realpath(__file__)) + "/" + 'price.png')
 
   result = []
 
