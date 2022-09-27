@@ -11,8 +11,9 @@ def generate_image():
   df_recent_currency.plot()
   plt.gca().invert_yaxis()
 
-  plt.title("recent 24 JPY/KRW currency")
-  plt.xlabel("investigation index")
+  plt.title("JPY/KRW currency(recent day)")
+  plt.xlabel("time")
   plt.ylabel("KRW")
+  plt.gca().axes.xaxis.set_visible(False)
 
   plt.savefig(os.path.dirname(os.path.realpath(__file__)) + "/" + "recent_currency.png")
