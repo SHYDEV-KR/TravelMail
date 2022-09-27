@@ -14,13 +14,19 @@ def arrangeFlightData(dataList: list):
     df.append(d[1])
     df.append(["-"] * 6)
   
+  for i, d in enumerate(df):
+    if len(d) > 6:
+      df[i] = d[1:]
+
   df = pd.DataFrame(df, columns=['항공사', '출발', '소요시간', '도착', '종류', '총 가격'])
+  todayFlights = df.shape[0]
+  df.to_csv(os.path.dirname(os.path.realpath(__file__)) + "/" + "yesterday_flight.csv", index=False)
   df_html = df.to_html(index=False, justify='center')
   df_html = df_html.replace('<table border="1" class="dataframe">', '<table border="0" class="dataframe" bgcolor=black cellpadding=1 cellspacing=1><tr><td><table border="0" class="dataframe" bgcolor=black>')
   df_html = df_html.replace('</table>', '</table> </td></tr></table>')
   df_html = df_html.replace('<td>','<td bgcolor=white>')
   df_html = df_html.replace('<th>','<th style="color: white;" bgcolor=#B1B2FF>')
-  return df_html
+  return todayFlights, df_html
 
 
 def getFlightData(url):
