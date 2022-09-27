@@ -1,3 +1,4 @@
+from operator import ge
 import pandas as pd
 import os
 import matplotlib.pyplot as plt
@@ -9,7 +10,6 @@ def generate_image():
   plt.figure(figsize=(10, 5))
 
   df_recent_currency.plot()
-  plt.gca().invert_yaxis()
 
   plt.title("JPY/KRW currency(recent day)")
   plt.xlabel("time")
