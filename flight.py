@@ -40,6 +40,17 @@ def getFlightData(url):
   time.sleep(3)
   driver.save_screenshot(os.path.dirname(os.path.realpath(__file__)) + "/" + 'price.png')
 
+  # 스크롤 처리
+  scroll_location = driver.execute_script("return document.body.scrollHeight")
+  while True:
+    driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
+    time.sleep(1)
+    scroll_height = driver.execute_script("return document.body.scrollHeight")
+    if scroll_location == scroll_height:
+      break
+    else:
+      scroll_location = driver.execute_script("return document.body.scrollHeight")
+
   result = []
 
   soup = BeautifulSoup(driver.page_source, 'html.parser')
