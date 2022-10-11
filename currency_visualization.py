@@ -1,19 +1,15 @@
-from operator import ge
 import pandas as pd
 import os
 import matplotlib.pyplot as plt
 
 def generate_image():
   df = pd.read_csv(os.path.dirname(os.path.realpath(__file__)) + "/" + "jpy_krw.csv", engine="python")
-  df_recent_currency = df.iloc[-24:, -1]
+  df_recent = df.iloc[-10:]
 
-  plt.figure(figsize=(10, 5))
-
-  df_recent_currency.plot()
-
-  plt.title("JPY/KRW currency(recent day)")
-  plt.xlabel("time")
+  plt.figure(figsize=(15, 10))
+  plt.plot(df_recent["date"], df_recent["currency"])
+  plt.title("JPY/KRW currency(recent 10days)")
+  plt.xlabel("date")
   plt.ylabel("KRW")
-  plt.gca().axes.xaxis.set_visible(False)
-
+  plt.xticks(rotation=45)
   plt.savefig(os.path.dirname(os.path.realpath(__file__)) + "/" + "recent_currency.png")
