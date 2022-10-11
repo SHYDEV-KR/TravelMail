@@ -51,7 +51,7 @@ def flightChangeMessage():
   elif (yesterdayFlights - todayFlights < 0):
     return f"{(todayFlights - yesterdayFlights) // 3}건 증가한"
   else:
-    return "어제와 동일하게"
+    return "어제와 동일한"
 
 content = f"""
     <html>
