@@ -61,7 +61,7 @@ def send_mail(mail, content, message, currency_code):
   server.starttls()
   server.login(email_id,email_pw)
   server.sendmail(message['From'],mail,message.as_string())
-  print(f"✅ Mail sent to {mail}!", end=" ")
+  print(f"📮 Mail sent to {mail}!", end=" ")
   server.quit()
 
 
@@ -94,5 +94,6 @@ for user in user_data:
   try:
     send_mail(recipient, content, message, user["currency_code"])
     print(f"(took {round(time.time() - start_user, 3)}s)")
+    print()
   except:
     print("❌ Error occured while sending mail...")
