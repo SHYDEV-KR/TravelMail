@@ -10,7 +10,6 @@ import private
 import os
 import pandas as pd
 
-df = pd.read_csv(os.path.dirname(os.path.realpath(__file__)) + "/" + "jpy_krw.csv", engine='python')
 private_keys = private.my_keys()
 user_data = private.user_data()
 
@@ -66,6 +65,7 @@ def send_mail(mail, content, message, currency_code):
 
 for user in user_data:
   today_flights, flight_table = flight.getFlightData(user["url"])
+  currency_df = pd.read_csv(os.path.dirname(os.path.realpath(__file__)) + "/" + f"{user['currency_code'].lower()}_krw.csv", engine='python')
   recipient = user["mail"]
   message = MIMEMultipart()
   message['Subject'] = f'[{dt.datetime.now().month}월 {dt.datetime.now().day}일] {user["to_KOR"]} 여행 정보'
@@ -79,8 +79,8 @@ for user in user_data:
             <div>
               <p>오늘 비행 수 : {today_flights // 3}건</p>
             </div>
-            <p>{df.iloc[df.shape[0] - 1]['date']} {df.iloc[df.shape[0] - 1]['time']} 기준 엔화 환율: <strong>{df.iloc[df.shape[0] -1]['currency']}</strong></p>
-            <p>환율정보, 비행기표 별도 첨부</p>
+            <p>{currency_df.iloc[currency_df.shape[0] - 1]['date']} {user["currency_code"]} 환율: <strong>{currency_df.iloc[currency_df.shape[0] -1]['currency']}</strong></p>
+            <p>*최저가 정렬* 환율정보, 비행기표 별도 사진 첨부</p>
             {flight_table}
             <p>위 표는 {dt.datetime.now()}에 작성됨</p>
             <p>환율은 오전 09:00 시작가 기준</p>
