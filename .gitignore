@@ -1,6 +1,5 @@
 __pycache__
+.DS_Store
 private.py
 *.csv
-.DS_Store
-price.png
-recent_currency.png
+*.png
