@@ -1,4 +1,3 @@
-from locale import currency
 import requests
 import datetime as dt
 import pandas as pd
