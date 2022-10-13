@@ -84,7 +84,7 @@ for user in user_data:
             {flight_table}
             <p>위 표는 {dt.datetime.now()}에 작성됨</p>
             <p>환율은 오전 09:00 시작가 기준</p>
-            <a href={private_keys["url"]} style="{buttonStyle}">지금 바로 보러가기&rarr;</a>
+            <a href={user["url"]} style="{buttonStyle}">지금 바로 보러가기&rarr;</a>
         </body>
       </html>
   """
