@@ -5,9 +5,10 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import os
 
-def arrangeFlightData(dataList: list):
+def arrange_flight_data(data_list: list):
+  start = time.time()
   df = list()
-  for d in dataList:
+  for d in data_list:
     d[0].append(d[-1])
     d[1].append("-")
     df.append(d[0])
@@ -25,10 +26,12 @@ def arrangeFlightData(dataList: list):
   df_html = df_html.replace('</table>', '</table> </td></tr></table>')
   df_html = df_html.replace('<td>','<td bgcolor=white>')
   df_html = df_html.replace('<th>','<th style="color: white;" bgcolor=#B1B2FF>')
+  print(f"✅ successfully arranged flight data! (took {round(time.time() - start, 3)}s)")
   return todayFlights, df_html
 
 
-def getFlightData(url):
+def get_flight_data(url):
+  start = time.time()
   specific_options = webdriver.ChromeOptions()
   specific_options.add_argument('--headless')
   specific_options.add_argument('--no-sandbox')
@@ -49,7 +52,6 @@ def getFlightData(url):
       break
     else:
       scroll_location = driver.execute_script("return document.body.scrollHeight")
-
   result = []
 
   soup = BeautifulSoup(driver.page_source, 'html.parser')
@@ -71,5 +73,5 @@ def getFlightData(url):
       
       for _ in range(count):
         r[i].remove('')
-
-  return arrangeFlightData(result)
+  print(f"✅ successfully received flight data from url! (took {round(time.time() - start, 3)}s)")
+  return arrange_flight_data(result)

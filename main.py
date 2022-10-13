@@ -1,14 +1,16 @@
-import flight
+import time
+import datetime as dt
+import os
+import pandas as pd
 
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
 
-import datetime as dt
+import flight
 import private
-import os
-import pandas as pd
+
 
 private_keys = private.my_keys()
 user_data = private.user_data()
@@ -59,12 +61,13 @@ def send_mail(mail, content, message, currency_code):
   server.starttls()
   server.login(email_id,email_pw)
   server.sendmail(message['From'],mail,message.as_string())
-  print(f"✅ Mail sent to {mail}!")
+  print(f"✅ Mail sent to {mail}!", end=" ")
   server.quit()
 
 
 for user in user_data:
-  today_flights, flight_table = flight.getFlightData(user["url"])
+  start_user = time.time()
+  today_flights, flight_table = flight.get_flight_data(user["url"])
   currency_df = pd.read_csv(os.path.dirname(os.path.realpath(__file__)) + "/" + f"{user['currency_code'].lower()}_krw.csv", engine='python')
   recipient = user["mail"]
   message = MIMEMultipart()
@@ -90,5 +93,6 @@ for user in user_data:
   """
   try:
     send_mail(recipient, content, message, user["currency_code"])
+    print(f"(took {round(time.time() - start_user, 3)}s)")
   except:
     print("❌ Error occured while sending mail...")
