@@ -20,7 +20,6 @@ def arrangeFlightData(dataList: list):
 
   df = pd.DataFrame(df, columns=['항공사', '출발', '소요시간', '도착', '종류', '총 가격'])
   todayFlights = df.shape[0]
-  df.to_csv(os.path.dirname(os.path.realpath(__file__)) + "/" + "yesterday_flight.csv", index=False)
   df_html = df.to_html(index=False, justify='center')
   df_html = df_html.replace('<table border="1" class="dataframe">', '<table border="0" class="dataframe" bgcolor=black cellpadding=1 cellspacing=1><tr><td><table border="0" class="dataframe" bgcolor=black>')
   df_html = df_html.replace('</table>', '</table> </td></tr></table>')

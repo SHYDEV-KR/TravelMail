@@ -1,5 +1,4 @@
 import flight
-import currency_visualization
 
 import smtplib
 from email.mime.multipart import MIMEMultipart
@@ -12,7 +11,6 @@ import os
 import pandas as pd
 
 df = pd.read_csv(os.path.dirname(os.path.realpath(__file__)) + "/" + "jpy_krw.csv", engine='python')
-currency_visualization.generate_image()
 private_keys = private.my_keys()
 user_data = private.user_data()
 
@@ -36,18 +34,8 @@ buttonStyle = """
   transition: 0.5s;
 """
 
-def flight_change_msg(yesterday_flights, today_flights):
-  today_flights = today_flights // 3
-  if (yesterday_flights - today_flights > 0):
-    return f"{(yesterday_flights - today_flights)}건 감소한"
-  elif (yesterday_flights - today_flights < 0):
-    return f"{(today_flights - yesterday_flights)}건 증가한"
-  else:
-    return "어제와 동일한"
-
-
-def attach_image():
-    filenames = ["price.png", "recent_currency.png"]
+def attach_image(currency_code):
+    filenames = ["price.png", f"recent_{currency_code.lower()}_currency.png"]
     try:
       for filename in filenames:
         fp = open(os.path.dirname(os.path.realpath(__file__)) + "/" + filename, 'rb')
@@ -56,11 +44,11 @@ def attach_image():
         att.add_header('Content-Disposition', 'attachment', filename=filename)
         message.attach(att)
     except:
-      print("no image file!")
+      print("❌ no image file!")
 
 
-def send_mail(mail, content, message):
-  attach_image()
+def send_mail(mail, content, message, currency_code):
+  attach_image(currency_code)
   mimetext = MIMEText(content,'html')
   message.attach(mimetext)
 
@@ -77,7 +65,6 @@ def send_mail(mail, content, message):
 
 
 for user in user_data:
-  yesterday_flights = user["yesterday_flights"]
   today_flights, flight_table = flight.getFlightData(user["url"])
   recipient = user["mail"]
   message = MIMEMultipart()
@@ -88,20 +75,20 @@ for user in user_data:
   content = f"""
       <html>
         <body>
-            <h3>{user["departure"]} ~ {user["arrival"]} {user["from_KOR"]}-{user["to_KOR"]} 왕복 비행정보</h3>
+            <h3>{user["departure"]} ~ {user["arrival"]}<br>{user["from_KOR"]}-{user["to_KOR"]} 왕복 비행정보</h3>
             <div>
-              <p>어제 기준 비행 수 : {yesterday_flights}건</p>
-              <p>오늘 기준 비행 수 : {flight_change_msg(yesterday_flights, today_flights)} {today_flights // 3}건</p>
+              <p>오늘 비행 수 : {today_flights // 3}건</p>
             </div>
             <p>{df.iloc[df.shape[0] - 1]['date']} {df.iloc[df.shape[0] - 1]['time']} 기준 엔화 환율: <strong>{df.iloc[df.shape[0] -1]['currency']}</strong></p>
             <p>환율정보, 비행기표 별도 첨부</p>
             {flight_table}
-            <p>위 표는 {dt.datetime.now()} 기준이며 몇 초 정도의 오차는 있을 수 있음</p>
+            <p>위 표는 {dt.datetime.now()}에 작성됨</p>
+            <p>환율은 오전 09:00 시작가 기준</p>
             <a href={private_keys["url"]} style="{buttonStyle}">지금 바로 보러가기&rarr;</a>
         </body>
       </html>
   """
   try:
-    send_mail(recipient, content, message)
+    send_mail(recipient, content, message, user["currency_code"])
   except:
     print("❌ Error occured while sending mail...")
