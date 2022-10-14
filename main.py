@@ -9,7 +9,7 @@ from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
 
 import flight
-import private
+import private.private as private
 
 
 private_keys = private.my_keys()
@@ -39,7 +39,7 @@ def attach_image(currency_code):
     filenames = ["price.png", f"recent_{currency_code.lower()}_currency.png"]
     try:
       for filename in filenames:
-        fp = open(os.path.dirname(os.path.realpath(__file__)) + "/" + filename, 'rb')
+        fp = open(os.path.dirname(os.path.realpath(__file__)) + "/img/" + filename, 'rb')
         att = MIMEApplication(fp.read(), _subtype="pdf")
         fp.close()
         att.add_header('Content-Disposition', 'attachment', filename=filename)
@@ -68,7 +68,7 @@ def send_mail(mail, content, message, currency_code):
 for user in user_data:
   start_user = time.time()
   today_flights, flight_table = flight.get_flight_data(user["url"])
-  currency_df = pd.read_csv(os.path.dirname(os.path.realpath(__file__)) + "/" + f"{user['currency_code'].lower()}_krw.csv", engine='python')
+  currency_df = pd.read_csv(os.path.dirname(os.path.realpath(__file__)) + "/csv/" + f"{user['currency_code'].lower()}_krw.csv", engine='python')
   recipient = user["mail"]
   message = MIMEMultipart()
   message['Subject'] = f'[{dt.datetime.now().month}월 {dt.datetime.now().day}일] {user["to_KOR"]} 여행 정보'

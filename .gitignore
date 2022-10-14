@@ -3,3 +3,6 @@ __pycache__
 private.py
 *.csv
 *.png
+/csv
+/img
+/private

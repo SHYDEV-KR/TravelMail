@@ -40,7 +40,7 @@ def get_flight_data(url):
   driver.set_window_size(1920, 1080)
   driver.get(url)
   time.sleep(3)
-  driver.save_screenshot(os.path.dirname(os.path.realpath(__file__)) + "/" + 'price.png')
+  driver.save_screenshot(os.path.dirname(os.path.realpath(__file__)) + "/img/" + 'price.png')
 
   # 스크롤 처리
   scroll_location = driver.execute_script("return document.body.scrollHeight")

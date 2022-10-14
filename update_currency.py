@@ -1,7 +1,7 @@
 import requests
 import datetime as dt
 import pandas as pd
-import private
+import private.private as private
 import os
 import time
 
@@ -18,13 +18,13 @@ def get_currency_data(date_time, currency_code):
 
 for currency_code in ["JPY", "USD"]:
   start = time.time()
-  df = pd.read_csv(os.path.dirname(os.path.realpath(__file__)) + "/" + f"{currency_code.lower()}_krw.csv", engine='python')
+  df = pd.read_csv(os.path.dirname(os.path.realpath(__file__)) + "/csv/" + f"{currency_code.lower()}_krw.csv", engine='python')
   length = df.shape[0] + 1
   now = dt.datetime.now()
   currency_data = get_currency_data(now, currency_code)
   if currency_data:
     df.loc[length] = currency_data
-    df.to_csv(os.path.dirname(os.path.realpath(__file__)) + "/" + f"{currency_code.lower()}_krw.csv", index=False)
+    df.to_csv(os.path.dirname(os.path.realpath(__file__)) + "/csv/" + f"{currency_code.lower()}_krw.csv", index=False)
     print(f"✅ updated latest {currency_code}_KRW currency! (took {round(time.time() - start, 3)}s)")
   else:
     print("❌ today is not a weekday!")
