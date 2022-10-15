@@ -80,10 +80,10 @@ for user in user_data:
         <body>
             <h3>{user["departure"]} ~ {user["arrival"]}<br>{user["from_KOR"]}-{user["to_KOR"]} 왕복 비행정보</h3>
             <div>
-              <p>오늘 비행 수 : {today_flights // 3}건</p>
+              <p>오늘 비행 수 : {today_flights}건</p>
             </div>
             <p>{currency_df.iloc[currency_df.shape[0] - 1]['date']} {user["currency_code"]} 환율: <strong>{currency_df.iloc[currency_df.shape[0] -1]['currency']}</strong></p>
-            <p>*최저가 정렬* 환율정보, 비행기표 별도 사진 첨부</p>
+            <p>**최저가 20개만 표시, 환율정보, 비행기표 별도 사진 첨부</p>
             {flight_table}
             <p>위 표는 {dt.datetime.now()}에 작성됨</p>
             <p>환율은 오전 09:00 시작가 기준</p>
