@@ -4,6 +4,7 @@ import pandas as pd
 import private.private as private
 import os
 import time
+from currency_visualization import save_image
 
 def get_currency_data(date_time, currency_code):
   url = f"https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey={private.my_keys()['currency_api_key']}&searchdate={date_time.year}{str(date_time.month).zfill(2)}{str(date_time.day).zfill(2)}&data=AP01"
@@ -26,5 +27,6 @@ for currency_code in ["JPY", "USD"]:
     df.loc[length] = currency_data
     df.to_csv(os.path.dirname(os.path.realpath(__file__)) + "/csv/" + f"{currency_code.lower()}_krw.csv", index=False)
     print(f"✅ updated latest {currency_code}_KRW currency! (took {round(time.time() - start, 3)}s)")
+    save_image(currency_code)
   else:
     print("❌ today is not a weekday!")
