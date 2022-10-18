@@ -32,12 +32,12 @@
 ## 📎 첨부파일 :
 
 ### 📸 셀레니움 캡쳐 결과
-
 ![price](https://user-images.githubusercontent.com/59094592/193433847-92c4863d-9292-44b7-92fd-2eb255b0c91d.png)
 
-### 💴 환율 차트 생성 결과
 
-![recent_currency (1)](https://user-images.githubusercontent.com/59094592/195333796-c5e9496d-e3f8-45ec-b354-18e928d95394.png)
+### 💴 환율 차트 생성 결과
+![recent_jpy_currency](https://user-images.githubusercontent.com/59094592/196305564-89c58440-579d-4cfd-a408-dfe9fb278c05.png)
+
 
 ## 🛠 To Dos
 
@@ -47,4 +47,5 @@
 - [ ] ~~requests와 selenium 성능 비교~~ -> requests로 크롤링 힘듦
 - [ ] ~~requests 성능이 좋다면, 이미지 캡쳐의 대안 찾기~~
 - [ ] 유저 데이터 DB에 저장하기
-- [ ] 웹에서 신청 받고, 유저 추가 자동화 시스템 구축
+- [ ] 웹에서 신청 받아 CSV 파일(또는 DB)에 추가
+- [ ] 유저의 신청 정보가 겹치면 묶어서 데이터 수집 1회만 수행한 후 메일 다건 동시에 발송
