@@ -73,7 +73,6 @@ for user in user_data:
   message = MIMEMultipart()
   message['Subject'] = f'[{dt.datetime.now().month}월 {dt.datetime.now().day}일] {user["to_KOR"]} 여행 정보'
   message['From'] = private_keys["sender_email"]
-  message['To'] = recipient
 
   content = f"""
       <html>
