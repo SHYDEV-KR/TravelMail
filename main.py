@@ -67,7 +67,7 @@ def send_mail(mail, content, message, currency_code):
 
 for user in user_data:
   start_user = time.time()
-  today_flights, flight_table = flight.get_flight_data(user["url"])
+  today_flights, table_rows, flight_table = flight.get_flight_data(user["url"])
   currency_df = pd.read_csv(os.path.dirname(os.path.realpath(__file__)) + "/csv/" + f"{user['currency_code'].lower()}_krw.csv", engine='python')
   recipient = user["mail"]
   message = MIMEMultipart()
@@ -82,7 +82,7 @@ for user in user_data:
               <p>오늘 비행 수 : {today_flights}건</p>
             </div>
             <p>{currency_df.iloc[currency_df.shape[0] - 1]['date']} {user["currency_code"]} 환율: <strong>{currency_df.iloc[currency_df.shape[0] -1]['currency']}</strong></p>
-            <p>**최저가 20개만 표시, 환율정보, 비행기표 별도 사진 첨부</p>
+            <p>**최저가 {table_rows}개만 표시, 환율정보, 비행기표 별도 사진 첨부</p>
             {flight_table}
             <p>위 표는 {dt.datetime.now()}에 작성됨</p>
             <p>환율은 오전 09:00 시작가 기준</p>

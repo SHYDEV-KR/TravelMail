@@ -20,13 +20,14 @@ def arrange_flight_data(data_list: list):
       df[i] = d[1:]
 
   df = pd.DataFrame(df, columns=['항공사', '출발', '소요시간', '도착', '종류', '총 가격'])
+  table_rows = df.shape[0] // 3
   df_html = df.to_html(index=False, justify='center')
   df_html = df_html.replace('<table border="1" class="dataframe">', '<table border="0" class="dataframe" bgcolor=black cellpadding=1 cellspacing=1><tr><td><table border="0" class="dataframe" bgcolor=black>')
   df_html = df_html.replace('</table>', '</table> </td></tr></table>')
   df_html = df_html.replace('<td>','<td bgcolor=white>')
   df_html = df_html.replace('<th>','<th style="color: white;" bgcolor=#B1B2FF>')
   print(f"✅ successfully arranged flight data! (took {round(time.time() - start, 3)}s)")
-  return df_html
+  return table_rows, df_html
 
 
 def get_flight_data(url):
@@ -77,4 +78,5 @@ def get_flight_data(url):
       for _ in range(count):
         r[i].remove('')
   print(f"✅ successfully received flight data from url! (took {round(time.time() - start, 3)}s)")
-  return todays_flight, arrange_flight_data(result)
+  table_rows, df_html = arrange_flight_data(result)
+  return todays_flight, table_rows, df_html
