@@ -12,16 +12,16 @@ headers = {
     "Notion-Version": "2022-06-28"
 }
 
-def get_queries_from_database(database_id):
+def get_queries_from_database(database_id, body={}):
   notion_api_url = f'https://api.notion.com/v1/databases/{database_id}/query'
-
-  response = requests.post(notion_api_url, headers=headers)
+  response = requests.post(notion_api_url, json=body, headers=headers)
 
   if response.status_code == 200:
     json_data = json.loads(response.text)
     return json_data['results']
   else:
-    return f"Error : {response.status_code}"
+    print(response.text)
+    return None
 
 
 def retrieve_page(page_id):
@@ -76,3 +76,33 @@ def get_order_data_from_single_query(json_data):
   }
   
   return order
+
+
+def generate_new_page_in_currency_db(db_id, currencies, date=datetime.datetime.today()):
+  request_url = "https://api.notion.com/v1/pages"
+  body_data = {
+    "parent" : { "database_id" : db_id },
+    "properties": {
+                    "JPY": {
+                        "number": currencies["JPY"]
+                    },
+                    "date": {
+                        "date": {
+                            "start": f"{date.year}-{str(date.month).zfill(2)}-{str(date.day).zfill(2)}"
+                        }
+                    },
+                    "USD": {
+                        "number": currencies["USD"]
+                    },
+                    "": {
+                        "title": []
+                    }
+                }
+  } 
+
+  response = requests.post(request_url, json=body_data, headers=headers)
+  if response.status_code == 200:
+    json_data = json.loads(response.text)
+    return json_data
+  else:
+    return f"{response.status_code} Error"
