@@ -60,7 +60,7 @@ def get_currency_data(currency_code, date=dt.datetime.today()):
 
 if __name__ == "__main__":
   currencies = dict()
-  date = dt.datetime(2022, 10, 28)
+  date = dt.datetime.today()
   available_currency_list = ["JPY", "USD"]
 
   for currency_code in available_currency_list:
