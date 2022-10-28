@@ -82,6 +82,6 @@ for query in order_queries:
   try:
     send_mail(recipient, content, message, order["currency_code"])
     print(f"(took {round(time.time() - start_user, 3)}s)")
-    print()
   except:
     print("❌ Error occured while sending mail...")
+  print()
