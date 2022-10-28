@@ -1,7 +1,6 @@
 import time
 import datetime as dt
 import os
-import pandas as pd
 
 import smtplib
 from email.mime.multipart import MIMEMultipart
@@ -11,6 +10,7 @@ from email.mime.application import MIMEApplication
 import flight
 import private.private as private
 import db
+from currency import get_latest_currency
 
 private_keys = private.my_keys()
 order_queries = db.get_queries_from_database(private_keys["db_id"])
@@ -57,7 +57,7 @@ for query in order_queries:
   start_user = time.time()
   order = db.get_order_data_from_single_query(query)
   today_flights, table_rows, flight_table = flight.get_flight_data(order["url"])
-  currency_df = pd.read_csv(os.path.dirname(os.path.realpath(__file__)) + "/csv/" + f"{order['currency_code'].lower()}_krw.csv", engine='python')
+  latest_currency = get_latest_currency(order["currency_code"])
   recipient = order["users"]
   message = MIMEMultipart()
   message['Subject'] = f'[{dt.datetime.now().month}월 {dt.datetime.now().day}일] {order["arrival_city"]["name"]} 여행 정보'
@@ -70,7 +70,7 @@ for query in order_queries:
             <div>
               <p>오늘 비행 수 : {today_flights}건</p>
             </div>
-            <p>{currency_df.iloc[currency_df.shape[0] - 1]['date']} {order["currency_code"]} 환율: <strong>{currency_df.iloc[currency_df.shape[0] -1]['currency']}</strong></p>
+            <p>{latest_currency['date']} {order["currency_code"]} 환율: <strong>{latest_currency['currency']}</strong></p>
             <p>**최저가 {table_rows}개만 표시, 환율정보, 비행기표 별도 사진 첨부</p>
             {flight_table}
             <p>위 표는 {dt.datetime.now()}에 작성됨</p>

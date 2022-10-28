@@ -30,6 +30,23 @@ def get_currencies(currency_code):
 
   return currencies
 
+def get_latest_currency(currency_code):
+  body={
+    "page_size": 1,
+    "sorts": [
+      {
+        "property" : "date",
+        "direction" : "descending"
+      }
+    ]
+  }
+  query = db.get_queries_from_database(private_keys["currency_db_id"], body=body)[0]
+  date = query["properties"]["date"]["date"]["start"]
+  currency = query["properties"][currency_code]["number"]
+  return ({
+    "date" : date,
+    "currency" : currency,
+  })
 
 def save_image(currency_code):
   start = time.time()
