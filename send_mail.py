@@ -52,36 +52,36 @@ def send_mail(mail, content, message, currency_code):
   print(f"📮 Mail sent to {mail}!", end=" ")
   server.quit()
 
+if __name__ == "__main__":
+  for query in order_queries:
+    start_user = time.time()
+    order = db.get_order_data_from_single_query(query)
+    today_flights, table_rows, flight_table = flight.get_flight_data(order["url"])
+    latest_currency = get_latest_currency(order["currency_code"])
+    recipient = order["users"]
+    message = MIMEMultipart()
+    message['Subject'] = f'[{dt.datetime.now().month}월 {dt.datetime.now().day}일] {order["arrival_city"]["name"]} 여행 정보'
+    message['From'] = private_keys["sender_email"]
 
-for query in order_queries:
-  start_user = time.time()
-  order = db.get_order_data_from_single_query(query)
-  today_flights, table_rows, flight_table = flight.get_flight_data(order["url"])
-  latest_currency = get_latest_currency(order["currency_code"])
-  recipient = order["users"]
-  message = MIMEMultipart()
-  message['Subject'] = f'[{dt.datetime.now().month}월 {dt.datetime.now().day}일] {order["arrival_city"]["name"]} 여행 정보'
-  message['From'] = private_keys["sender_email"]
-
-  content = f"""
-      <html>
-        <body>
-            <h3>{order["departure_date"]} ~ {order["arrival_date"]}<br>{order["departure_city"]["name"]}-{order["arrival_city"]["name"]} 왕복 비행정보</h3>
-            <div>
-              <p>오늘 비행 수 : {today_flights}건</p>
-            </div>
-            <p>{latest_currency['date']} {order["currency_code"]} 환율: <strong>{latest_currency['currency']}</strong></p>
-            <p>**최저가 {table_rows}개만 표시, 환율정보, 비행기표 별도 사진 첨부</p>
-            {flight_table}
-            <p>위 표는 {dt.datetime.now()}에 작성됨</p>
-            <p>환율은 오전 09:00 시작가 기준</p>
-            <a href={order["url"]} style="{buttonStyle}">지금 바로 보러가기&rarr;</a>
-        </body>
-      </html>
-  """
-  try:
-    send_mail(recipient, content, message, order["currency_code"])
-    print(f"(took {round(time.time() - start_user, 3)}s)")
-  except:
-    print("❌ Error occured while sending mail...")
-  print()
+    content = f"""
+        <html>
+          <body>
+              <h3>{order["departure_date"]} ~ {order["arrival_date"]}<br>{order["departure_city"]["name"]}-{order["arrival_city"]["name"]} 왕복 비행정보</h3>
+              <div>
+                <p>오늘 비행 수 : {today_flights}건</p>
+              </div>
+              <p>{latest_currency['date']} {order["currency_code"]} 환율: <strong>{latest_currency['currency']}</strong></p>
+              <p>**최저가 {table_rows}개만 표시, 환율정보, 비행기표 별도 사진 첨부</p>
+              {flight_table}
+              <p>위 표는 {dt.datetime.now()}에 작성됨</p>
+              <p>환율은 오전 09:00 시작가 기준</p>
+              <a href={order["url"]} style="{buttonStyle}">지금 바로 보러가기&rarr;</a>
+          </body>
+        </html>
+    """
+    try:
+      send_mail(recipient, content, message, order["currency_code"])
+      print(f"(took {round(time.time() - start_user, 3)}s)")
+    except:
+      print("❌ Error occured while sending mail...")
+    print()

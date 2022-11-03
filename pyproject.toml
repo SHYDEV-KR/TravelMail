@@ -1,18 +1,18 @@
 [tool.poetry]
-name = "airline-automail"
+name = "travelmail"
 version = "0.1.0"
 description = ""
-authors = ["Your Name <you@example.com>"]
+authors = ["paulyoon28 <ekdmbzzang@naver.com>"]
 readme = "README.md"
-packages = [{include = "airline_automail"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-matplotlib = "^3.6.1"
-pandas = "^1.5.1"
 selenium = "^4.5.0"
 bs4 = "^0.0.1"
 requests = "^2.28.1"
+matplotlib = "^3.6.2"
+pandas = "^1.5.1"
+webdriver-manager = "^3.8.4"
 
 
 [build-system]
