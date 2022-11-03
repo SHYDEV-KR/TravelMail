@@ -1,6 +1,7 @@
 import time
-from selenium import webdriver 
+from selenium import webdriver
 from bs4 import BeautifulSoup
+from webdriver_manager.chrome import ChromeDriverManager
 
 import pandas as pd
 import os
@@ -35,7 +36,11 @@ def get_flight_data(url):
   specific_options = webdriver.ChromeOptions()
   specific_options.add_argument('--headless')
   specific_options.add_argument('--no-sandbox')
-  driver = webdriver.Chrome('chromedriver', options = specific_options)
+  try:
+    driver = webdriver.Chrome('chromedriver', options = specific_options)
+  except:
+    driver = webdriver.Chrome(ChromeDriverManager().install(), options = specific_options)
+    
   driver.set_window_size(1920, 1080)
   driver.get(url)
   time.sleep(3)
